@@ -6,7 +6,7 @@ const Hospital = require('../models/hospital');
 exports.getHospitals = async (req, res, next) => {
     try {
         const hospitals = await Hospital.find();
-        res.status(200).json({success: true, data:hospitals});
+        res.status(200).json({success: true, count: hospitals.length, data:hospitals});
     }
     catch(err) {
         res.status(400).json({success: false});
