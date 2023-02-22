@@ -60,7 +60,6 @@ try {
     res.status(400).json({ success: false });
 }
 };
-  
 //@desc  Delete hospital
 //@route DELETE /api/v1/hospitals/:id
 //@access Private
