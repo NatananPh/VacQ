@@ -23,6 +23,10 @@ exports.register = async (req, res, next) => {
 //@route    POST /api/v1/auth/login
 //@access   Public
 exports.login = async (req, res, next) => {
+    // if we cannot cast the email or password to a string, then it is not a valid email
+    if (typeof req.body.email !== 'string' || typeof req.body.password !== 'string') {
+        return res.status(400).json({ success: false, msg: "Cannot convert email or password to string" });
+    }
     const { email, password } = req.body;
     // Validate email and password
     if (!email || !password) {
@@ -64,6 +68,18 @@ const sendTokenResponse = (user, statusCode, res) => {
         token,
     });
 };
+
+//@desc     Logout user / clear cookie
+//@route    GET /api/v1/auth/logout
+//@access   Private
+exports.logout = async (req, res, next) => {
+    res.cookie('token', 'cookie', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true
+    });
+    res.status(200).json({success: true, data: {}});
+};
+
 
 exports.getMe = async (req, res, next) => {
     const user = await User.findById(req.user.id);
